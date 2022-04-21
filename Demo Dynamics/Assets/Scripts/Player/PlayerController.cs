@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController controller;
     private PlayerInput playerInput;
+    private Animator animator;
 
     private Vector2 currentMovementInput;
     private Vector3 currentMovement;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         playerInput = new PlayerInput();
         controller = gameObject.GetComponent<CharacterController>();
+        animator = gameObject.GetComponent<Animator>();
 
         // Update movement whenever a movement button is pressed or released
         playerInput.PlayerControls.Move.started += onMovementInput;
@@ -41,6 +43,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        handleAnimation();
+
         // Moves the player using the Character controller component
         handleGravity();
         controller.Move(currentMovement * walkSpeed * Time.deltaTime);
@@ -66,6 +70,21 @@ public class PlayerController : MonoBehaviour
         {
             float gravity = -9.81f;
             currentMovement.y = gravity;
+        }
+    }
+
+    // Method that tells the animator when to run various animations
+    void handleAnimation() 
+    {
+        bool isWalking = animator.GetBool("isWalking");
+
+        if(isMovementPressed && !isWalking) 
+        {
+            animator.SetBool("isWalking", true);
+        }
+        else if (!isMovementPressed && isWalking)
+        {
+            animator.SetBool("isWalking", false);
         }
     }
 
