@@ -14,13 +14,28 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 currentMovementInput;
     private Vector3 currentMovement;
+
+    private Vector2 mouseMovementInput;
+    private Vector2 mouseMovement;
+
     private bool isMovementPressed;
+    // bool to check if player is looking around
+    //private bool isMoving;
+
+    private float verticalRotation = 0f;
+    // Stores the parent of First Person virtual camera
+    [SerializeField]
+    GameObject primaryTarget;
 
     [SerializeField]
     float walkSpeed;
-
     [SerializeField]
     float sprintSpeed;
+    [SerializeField]
+    float sensitivityX;
+    [SerializeField]
+    float sensitivityY;
+
 
     public 
 
@@ -35,6 +50,12 @@ public class PlayerController : MonoBehaviour
         playerInput.PlayerControls.Move.canceled += onMovementInput;
         // Update movement for gamepads with analoge sticks
         playerInput.PlayerControls.Move.performed += onMovementInput;
+
+        // update look rotation when mouse / analog stick is used
+        playerInput.PlayerControls.Look.started += onMouseInput;
+        playerInput.PlayerControls.Look.canceled += onMouseInput;
+        playerInput.PlayerControls.Look.performed += onMouseInput;
+
 
     }
 
@@ -51,10 +72,29 @@ public class PlayerController : MonoBehaviour
         // Moves the player using the Character controller component
         handleGravity();
         controller.Move(currentMovement * walkSpeed * Time.deltaTime);
+
+        // Rotates the player horizontally to where the player is trying to look
+        transform.Rotate(Vector3.up, mouseMovement.x * sensitivityX * Time.deltaTime);
+
+        // Clamps and handles the vertical rotation of the camera
+        verticalRotation -= mouseMovement.y;
+        verticalRotation = Mathf.Clamp(verticalRotation, -60, 60);
+        Vector3 targetRotation = transform.eulerAngles;
+        targetRotation.x = verticalRotation;
+        primaryTarget.transform.eulerAngles = targetRotation;
     }
 
     void toggleCamera() 
     {
+
+    }
+
+    void onMouseInput(InputAction.CallbackContext context)
+    {
+        mouseMovementInput = context.ReadValue<Vector2>();
+        mouseMovement.x = mouseMovementInput.x;
+        mouseMovement.y = mouseMovementInput.y;
+        //isMoving = mouseMovementInput.x != 0 || mouseMovementInput.y != 0;
 
     }
 
