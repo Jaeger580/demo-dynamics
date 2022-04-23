@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 // This script is for handling the controls and animations of the player character
 
@@ -20,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     float sprintSpeed;
+
+    public 
 
     void Awake()
     {
@@ -48,6 +51,11 @@ public class PlayerController : MonoBehaviour
         // Moves the player using the Character controller component
         handleGravity();
         controller.Move(currentMovement * walkSpeed * Time.deltaTime);
+    }
+
+    void toggleCamera() 
+    {
+
     }
 
     void onMovementInput(InputAction.CallbackContext context) 
