@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 currentMovementInput;
     private Vector3 currentMovement;
+    private Vector3 moveDirection;
+
 
     private Vector2 mouseMovementInput;
     private Vector2 mouseMovement;
@@ -68,16 +70,17 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         handleAnimation();
+        handleGravity();
 
         // Moves the player using the Character controller component
-        handleGravity();
-        controller.Move(currentMovement * walkSpeed * Time.deltaTime);
+        moveDirection = transform.right * currentMovement.x + transform.forward * currentMovement.z;
+        controller.Move(moveDirection * walkSpeed * Time.deltaTime);
 
         // Rotates the player horizontally to where the player is trying to look
         transform.Rotate(Vector3.up, mouseMovement.x * sensitivityX * Time.deltaTime);
 
         // Clamps and handles the vertical rotation of the camera
-        verticalRotation -= mouseMovement.y;
+        verticalRotation -= mouseMovement.y * sensitivityY;
         verticalRotation = Mathf.Clamp(verticalRotation, -60, 60);
         Vector3 targetRotation = transform.eulerAngles;
         targetRotation.x = verticalRotation;
@@ -95,7 +98,6 @@ public class PlayerController : MonoBehaviour
         mouseMovement.x = mouseMovementInput.x;
         mouseMovement.y = mouseMovementInput.y;
         //isMoving = mouseMovementInput.x != 0 || mouseMovementInput.y != 0;
-
     }
 
     void onMovementInput(InputAction.CallbackContext context) 
