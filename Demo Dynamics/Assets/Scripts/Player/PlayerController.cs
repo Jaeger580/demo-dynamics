@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Temporary code to disable the mouse cursor on start
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -80,7 +82,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.up, mouseMovement.x * sensitivityX * Time.deltaTime);
 
         // Clamps and handles the vertical rotation of the camera
-        verticalRotation -= mouseMovement.y * sensitivityY;
+        verticalRotation -= mouseMovement.y * sensitivityY * Time.deltaTime;
         verticalRotation = Mathf.Clamp(verticalRotation, -60, 60);
         Vector3 targetRotation = transform.eulerAngles;
         targetRotation.x = verticalRotation;
