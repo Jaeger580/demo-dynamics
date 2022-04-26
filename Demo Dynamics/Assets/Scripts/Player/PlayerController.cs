@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseMovement;
 
     private bool isMovementPressed;
+    private bool jump = false;
     // bool to check if player is looking around
     //private bool isMoving;
 
@@ -37,9 +38,13 @@ public class PlayerController : MonoBehaviour
     float sensitivityX;
     [SerializeField]
     float sensitivityY;
+    [SerializeField]
+    float jumpHeight;
+    [SerializeField]
+    float gravity = -9.81f;
 
 
-    public 
+    public
 
     void Awake()
     {
@@ -58,6 +63,9 @@ public class PlayerController : MonoBehaviour
         playerInput.PlayerControls.Look.canceled += onMouseInput;
         playerInput.PlayerControls.Look.performed += onMouseInput;
 
+        // Tell the character to jump when player hits the jump button. Underscore used since no context is required
+        // is this really the best formatting?????
+        playerInput.PlayerControls.Jump.performed += _ => onJump();
 
     }
 
@@ -71,8 +79,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        handleAnimation();
         handleGravity();
+        handleAnimation();
 
         // Moves the player using the Character controller component
         moveDirection = transform.right * currentMovement.x + transform.forward * currentMovement.z;
@@ -89,9 +97,18 @@ public class PlayerController : MonoBehaviour
         primaryTarget.transform.eulerAngles = targetRotation;
     }
 
+    // Add upward velocity to player to make them jump
+    void onJump() 
+    {
+        if (controller.isGrounded) 
+        {
+            Debug.Log("Jump Called");
+            jump = true;
+        }
+    }
+
     void toggleCamera() 
     {
-
     }
 
     void onMouseInput(InputAction.CallbackContext context)
@@ -113,15 +130,21 @@ public class PlayerController : MonoBehaviour
     // Method that adds gravity to the player since there is no rigidbody
     void handleGravity() 
     {
-        if (controller.isGrounded)
+        if (jump) 
         {
-            float groundGravity = -0.01f;
+            Debug.Log("Player jumped");
+            currentMovement.y = Mathf.Sqrt(-1f * jumpHeight * gravity);
+            jump = false;
+        }
+        else if (controller.isGrounded)
+        {
+            float groundGravity = 0.00f;
             currentMovement.y = groundGravity;
         }
         else 
         {
-            float gravity = -9.81f;
-            currentMovement.y = gravity;
+            float curGravity = gravity;
+            currentMovement.y = curGravity;
         }
     }
 

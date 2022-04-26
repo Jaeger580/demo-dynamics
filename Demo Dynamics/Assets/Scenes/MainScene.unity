@@ -326,8 +326,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1208659634987172739, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
-      propertyPath: sensitivityY
-      value: 50
+      propertyPath: jumpHeight
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3608730472908105844, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
       propertyPath: m_Name

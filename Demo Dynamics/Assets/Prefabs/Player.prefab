@@ -1156,7 +1156,9 @@ MonoBehaviour:
   walkSpeed: 2
   sprintSpeed: 0
   sensitivityX: 50
-  sensitivityY: 5
+  sensitivityY: 50
+  jumpHeight: 4
+  gravity: -9.81
 --- !u!1 &3721937220876433210
 GameObject:
   m_ObjectHideFlags: 0
