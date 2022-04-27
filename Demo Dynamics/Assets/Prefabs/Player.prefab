@@ -1116,7 +1116,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: b179135af415c434fab6a8e5b661fb23, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1137,8 +1137,8 @@ CharacterController:
   m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.0001
-  m_MinMoveDistance: 0.001
+  m_SkinWidth: 0.01
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &1208659634987172739
 MonoBehaviour:
@@ -1153,11 +1153,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   primaryTarget: {fileID: 6025295746540831109}
-  walkSpeed: 2
+  walkSpeed: 3
   sprintSpeed: 0
   sensitivityX: 50
   sensitivityY: 50
-  jumpHeight: 4
+  jumpHeight: 10
   gravity: -9.81
 --- !u!1 &3721937220876433210
 GameObject:

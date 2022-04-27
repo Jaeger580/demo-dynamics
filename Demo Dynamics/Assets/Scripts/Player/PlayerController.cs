@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
     {
         // Temporary code to disable the mouse cursor on start
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -83,7 +84,8 @@ public class PlayerController : MonoBehaviour
         handleAnimation();
 
         // Moves the player using the Character controller component
-        moveDirection = transform.right * currentMovement.x + transform.forward * currentMovement.z;
+        moveDirection = Vector3.zero;
+        moveDirection = transform.right * currentMovement.x + Vector3.up * currentMovement.y + transform.forward * currentMovement.z;
         controller.Move(moveDirection * walkSpeed * Time.deltaTime);
 
         // Rotates the player horizontally to where the player is trying to look
@@ -100,11 +102,13 @@ public class PlayerController : MonoBehaviour
     // Add upward velocity to player to make them jump
     void onJump() 
     {
-        if (controller.isGrounded) 
-        {
-            Debug.Log("Jump Called");
-            jump = true;
-        }
+        //Debug.Log("Jump Called");
+        //jump = true;
+
+        if (controller.isGrounded)
+            Debug.Log("Is grounded");
+        else
+            Debug.Log("Not Grounded");
     }
 
     void toggleCamera() 
@@ -130,22 +134,23 @@ public class PlayerController : MonoBehaviour
     // Method that adds gravity to the player since there is no rigidbody
     void handleGravity() 
     {
-        if (jump) 
+        if (jump && controller.isGrounded) 
         {
             Debug.Log("Player jumped");
             currentMovement.y = Mathf.Sqrt(-1f * jumpHeight * gravity);
-            jump = false;
         }
-        else if (controller.isGrounded)
-        {
-            float groundGravity = 0.00f;
-            currentMovement.y = groundGravity;
-        }
+        //else if (controller.isGrounded)
+        //{
+        //    float groundGravity = -0.01f;
+        //    currentMovement.y = groundGravity;
+        //}
         else 
         {
             float curGravity = gravity;
             currentMovement.y = curGravity;
         }
+
+        jump = false;
     }
 
     // Method that tells the animator when to run various animations
