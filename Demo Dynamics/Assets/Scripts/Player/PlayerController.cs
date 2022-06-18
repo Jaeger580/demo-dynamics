@@ -8,165 +8,38 @@ using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController controller;
     private PlayerInput playerInput;
-    private Animator animator;
-
-    private Vector2 currentMovementInput;
-    private Vector3 currentMovement;
-    private Vector3 moveDirection;
-
-
-    private Vector2 mouseMovementInput;
-    private Vector2 mouseMovement;
-
-    private bool isMovementPressed;
-    private bool jump = false;
-    // bool to check if player is looking around
-    //private bool isMoving;
-
-    private float verticalRotation = 0f;
-    // Stores the parent of First Person virtual camera
-    [SerializeField]
-    GameObject primaryTarget;
-
-    [SerializeField]
-    float walkSpeed;
-    [SerializeField]
-    float sprintSpeed;
-    [SerializeField]
-    float sensitivityX;
-    [SerializeField]
-    float sensitivityY;
-    [SerializeField]
-    float jumpHeight;
-    [SerializeField]
-    float gravity = -9.81f;
-
-
-    public
+    private PlayerMovement playerMovement;
+    private LookControls lookControls;
 
     void Awake()
     {
+        playerMovement = GetComponent<PlayerMovement>();
+        lookControls = GetComponent<LookControls>();
         playerInput = new PlayerInput();
-        controller = gameObject.GetComponent<CharacterController>();
-        animator = gameObject.GetComponent<Animator>();
 
         // Update movement whenever a movement button is pressed or released
-        playerInput.PlayerControls.Move.started += onMovementInput;
-        playerInput.PlayerControls.Move.canceled += onMovementInput;
+        playerInput.PlayerControls.Move.started += playerMovement.onMovementInput;
+        playerInput.PlayerControls.Move.canceled += playerMovement.onMovementInput;
         // Update movement for gamepads with analoge sticks
-        playerInput.PlayerControls.Move.performed += onMovementInput;
+        playerInput.PlayerControls.Move.performed += playerMovement.onMovementInput;
 
         // update look rotation when mouse / analog stick is used
-        playerInput.PlayerControls.Look.started += onMouseInput;
-        playerInput.PlayerControls.Look.canceled += onMouseInput;
-        playerInput.PlayerControls.Look.performed += onMouseInput;
+        playerInput.PlayerControls.Look.started += lookControls.onMouseInput;
+        playerInput.PlayerControls.Look.canceled += lookControls.onMouseInput;
+        playerInput.PlayerControls.Look.performed += lookControls.onMouseInput;
 
         // Tell the character to jump when player hits the jump button. Underscore used since no context is required
         // is this really the best formatting?????
-        playerInput.PlayerControls.Jump.performed += _ => onJump();
+        playerInput.PlayerControls.Jump.performed += _ => playerMovement.onJump();
 
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Temporary code to disable the mouse cursor on start
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
     void Update()
     {
-        handleGravity();
-        handleAnimation();
-
-        // Moves the player using the Character controller component
-        moveDirection = Vector3.zero;
-        moveDirection = transform.right * currentMovement.x + Vector3.up * currentMovement.y + transform.forward * currentMovement.z;
-        controller.Move(moveDirection * walkSpeed * Time.deltaTime);
-
-        // Rotates the player horizontally to where the player is trying to look
-        transform.Rotate(Vector3.up, mouseMovement.x * sensitivityX * Time.deltaTime);
-
-        // Clamps and handles the vertical rotation of the camera
-        verticalRotation -= mouseMovement.y * sensitivityY * Time.deltaTime;
-        verticalRotation = Mathf.Clamp(verticalRotation, -60, 60);
-        Vector3 targetRotation = transform.eulerAngles;
-        targetRotation.x = verticalRotation;
-        primaryTarget.transform.eulerAngles = targetRotation;
     }
 
-    // Add upward velocity to player to make them jump
-    void onJump() 
-    {
-        //Debug.Log("Jump Called");
-        //jump = true;
-
-        if (controller.isGrounded)
-            Debug.Log("Is grounded");
-        else
-            Debug.Log("Not Grounded");
-    }
-
-    void toggleCamera() 
-    {
-    }
-
-    void onMouseInput(InputAction.CallbackContext context)
-    {
-        mouseMovementInput = context.ReadValue<Vector2>();
-        mouseMovement.x = mouseMovementInput.x;
-        mouseMovement.y = mouseMovementInput.y;
-        //isMoving = mouseMovementInput.x != 0 || mouseMovementInput.y != 0;
-    }
-
-    void onMovementInput(InputAction.CallbackContext context) 
-    {
-        currentMovementInput = context.ReadValue<Vector2>();
-        currentMovement.x = currentMovementInput.x;
-        currentMovement.z = currentMovementInput.y;
-        isMovementPressed = currentMovementInput.x != 0 || currentMovementInput.y != 0;
-    }
-
-    // Method that adds gravity to the player since there is no rigidbody
-    void handleGravity() 
-    {
-        if (jump && controller.isGrounded) 
-        {
-            Debug.Log("Player jumped");
-            currentMovement.y = Mathf.Sqrt(-1f * jumpHeight * gravity);
-        }
-        //else if (controller.isGrounded)
-        //{
-        //    float groundGravity = -0.01f;
-        //    currentMovement.y = groundGravity;
-        //}
-        else 
-        {
-            float curGravity = gravity;
-            currentMovement.y = curGravity;
-        }
-
-        jump = false;
-    }
-
-    // Method that tells the animator when to run various animations
-    void handleAnimation() 
-    {
-        bool isWalking = animator.GetBool("isWalking");
-
-        if(isMovementPressed && !isWalking) 
-        {
-            animator.SetBool("isWalking", true);
-        }
-        else if (!isMovementPressed && isWalking)
-        {
-            animator.SetBool("isWalking", false);
-        }
-    }
 
     void OnEnable()
     {
