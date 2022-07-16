@@ -6,18 +6,21 @@ using UnityEngine.InputSystem;
 
 public class LookControls : MonoBehaviour
 {
-    // Stores the parent of First Person virtual camera
-    [SerializeField]
-    GameObject primaryTarget;
     [SerializeField]
     float sensitivityX;
     [SerializeField]
     float sensitivityY;
 
-    private float verticalRotation = 0f;
-
     private Vector2 mouseMovementInput;
     private Vector2 mouseMovement;
+
+    private float xRotation = 0f;
+    // Holds a reference to the players Transform component.
+    //public Transform playerRef;
+    public Transform camRef;
+
+    float mouseX;
+    float mouseY;
 
     void Start()
     {
@@ -28,15 +31,15 @@ public class LookControls : MonoBehaviour
 
     void Update()
     {
-        // Rotates the player horizontally to where the player is trying to look
-        transform.Rotate(Vector3.up, mouseMovement.x * sensitivityX * Time.deltaTime);
+        mouseX = mouseMovement.x * sensitivityX;
+        mouseY = mouseMovement.y * sensitivityY;
 
-        // Clamps and handles the vertical rotation of the camera
-        verticalRotation -= mouseMovement.y * sensitivityY * Time.deltaTime;
-        verticalRotation = Mathf.Clamp(verticalRotation, -60, 60);
-        Vector3 targetRotation = transform.eulerAngles;
-        targetRotation.x = verticalRotation;
-        primaryTarget.transform.eulerAngles = targetRotation;
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        //transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        camRef.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
+        
     }
 
     public void onMouseInput(InputAction.CallbackContext context)
@@ -44,6 +47,6 @@ public class LookControls : MonoBehaviour
         mouseMovementInput = context.ReadValue<Vector2>();
         mouseMovement.x = mouseMovementInput.x;
         mouseMovement.y = mouseMovementInput.y;
-        //isMoving = mouseMovementInput.x != 0 || mouseMovementInput.y != 0;
+
     }
 }
