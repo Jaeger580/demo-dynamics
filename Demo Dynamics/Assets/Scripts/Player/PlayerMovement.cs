@@ -50,10 +50,10 @@ public class PlayerMovement : MonoBehaviour
 
         moveDirection = Vector3.zero;
 
-        handleAnimation();
-
         moveDirection += currentMovement.z * transform.forward;
         moveDirection += currentMovement.x * transform.right;
+
+        handleAnimation();
 
         // Moves the player using the Character controller component
         controller.Move(moveDirection * Time.deltaTime * walkSpeed);
@@ -91,15 +91,11 @@ public class PlayerMovement : MonoBehaviour
     // Method that tells the animator when to run various animations
     void handleAnimation() 
     {
-        bool isWalking = animator.GetBool("isWalking");
+        // Convert movement directions related to rotations into float values
+        float velocityZ = Vector3.Dot(moveDirection, transform.forward);
+        float velocityX = Vector3.Dot(moveDirection, transform.right);
 
-        if(isMovementPressed && !isWalking) 
-        {
-            animator.SetBool("isWalking", true);
-        }
-        else if (!isMovementPressed && isWalking)
-        {
-            animator.SetBool("isWalking", false);
-        }
+        animator.SetFloat("VelocityZ", velocityZ);
+        animator.SetFloat("VelocityX", velocityX);
     }
 }
