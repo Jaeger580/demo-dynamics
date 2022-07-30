@@ -560,28 +560,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1208659634987172736, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
-      propertyPath: m_Height
-      value: 1.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1208659634987172736, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1208659634987172736, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
-      propertyPath: m_SkinWidth
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1208659634987172736, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
-      propertyPath: m_SlopeLimit
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 1208659634987172736, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
-      propertyPath: m_StepOffset
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1389819302246647784, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.1
+      propertyPath: m_Radius
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 3608730472908105844, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
       propertyPath: m_Name
@@ -630,10 +610,6 @@ PrefabInstance:
     - target: {fileID: 4134051099371958990, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5162177592849261870, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02e0036c97b804b469d3038bd9bff0c3, type: 3}
@@ -899,7 +875,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3e6343bb5486f1f41bcaef846e8cb46c, type: 2}
+  - {fileID: 2100000, guid: bce32739db90b6843ac7f0179bcaa6b7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -953,14 +929,6 @@ PrefabInstance:
     - target: {fileID: 8642225304373351647, guid: 50a0925b0c22af146a2d15615f815a1c, type: 3}
       propertyPath: m_RootOrder
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8642225304373351647, guid: 50a0925b0c22af146a2d15615f815a1c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8642225304373351647, guid: 50a0925b0c22af146a2d15615f815a1c, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8642225304373351647, guid: 50a0925b0c22af146a2d15615f815a1c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1055,7 +1023,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.001
   far clip plane: 1000
   field of view: 60
   orthographic: 0

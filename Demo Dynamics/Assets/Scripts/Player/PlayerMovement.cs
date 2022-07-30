@@ -97,5 +97,8 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetFloat("VelocityZ", velocityZ);
         animator.SetFloat("VelocityX", velocityX);
+
+        animator.SetBool("isGrounded", playerGrounded);
+
     }
 }
