@@ -95,6 +95,9 @@ public class PlayerMovement : MonoBehaviour
         float velocityZ = Vector3.Dot(moveDirection, transform.forward);
         float velocityX = Vector3.Dot(moveDirection, transform.right);
 
+
+        //animator.SetBool("isMoving", isMovementPressed);
+
         animator.SetFloat("VelocityZ", velocityZ);
         animator.SetFloat("VelocityX", velocityX);
 

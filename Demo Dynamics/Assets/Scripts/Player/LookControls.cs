@@ -15,13 +15,15 @@ public class LookControls : MonoBehaviour
     private Vector2 mouseMovement;
 
     private float xRotation = 0f;
-    // Holds a reference to the players Transform component.
-    //public Transform playerRef;
+    
     public Transform camRef;
+    //public Transform playerHead;
+
+    // target where that player's head will look at
+    public GameObject lookTarget;
 
     float mouseX;
     float mouseY;
-
     void Start()
     {
         // Temporary code to disable the mouse cursor on start
@@ -31,15 +33,21 @@ public class LookControls : MonoBehaviour
 
     void Update()
     {
+
         mouseX = mouseMovement.x * sensitivityX;
         mouseY = mouseMovement.y * sensitivityY;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        //transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        xRotation = Mathf.Clamp(xRotation, -90f, 75f);
         camRef.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
-        
+
+        Vector3 camPos = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 5f)); // Gets the world cordinates for the position at the center of the game a specified distance from the camera.
+        lookTarget.transform.position = camPos; // Positions the look target at the center of the player's view.
+    }
+
+    void FixedUpdate()
+    {
     }
 
     public void onMouseInput(InputAction.CallbackContext context)
