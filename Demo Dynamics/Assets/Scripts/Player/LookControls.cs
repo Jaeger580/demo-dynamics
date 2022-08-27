@@ -38,7 +38,7 @@ public class LookControls : MonoBehaviour
         mouseY = mouseMovement.y * sensitivityY;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 75f);
+        xRotation = Mathf.Clamp(xRotation, -80f, 75f);
         camRef.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
 

@@ -11,11 +11,14 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private LookControls lookControls;
+    private RifleShoot rifleShoot;
+    [SerializeField] GameObject rifle;
 
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
         lookControls = GetComponent<LookControls>();
+        rifleShoot = rifle.GetComponent<RifleShoot>();
         playerInput = new PlayerInput();
 
         // Update movement whenever a movement button is pressed or released
@@ -33,6 +36,10 @@ public class PlayerController : MonoBehaviour
         // is this really the best formatting?????
         playerInput.PlayerControls.Jump.performed += _ => playerMovement.onJump();
 
+        // fire player's weapon when they press the fire button
+        playerInput.PlayerControls.Fire.started += rifleShoot.Shoot;
+        playerInput.PlayerControls.Fire.canceled += rifleShoot.Shoot;
+        playerInput.PlayerControls.Fire.performed += rifleShoot.Shoot;
     }
 
     // Update is called once per frame
